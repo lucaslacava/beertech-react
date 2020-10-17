@@ -28,20 +28,21 @@ const messageStyle = {
   boxShadow: "2px 2px 7px #DDD"
 }
 
+
 const Twidder = () => {
   const [twidders, setTwidders] = useState<TwidderState[]>([]);
 
   useEffect(() => {
     const loadMessages = async () => {
       const { data: messages } = await Axios.get<null, TwidderRemote>("https://jsonplaceholder.typicode.com/posts");
-      
+
       const newMessages = await messages.map(async (message) => {
         const { data: remoteComments } = await Axios.get<null, CommentsRemote>(`https://jsonplaceholder.typicode.com/posts/${message.id}/comments`);
         message.comments = remoteComments;
-        
+
         return message;
       });
-      
+
       Promise.all(newMessages).then((messages) => {
         setTwidders(messages);
       });
@@ -76,7 +77,7 @@ const Twidder = () => {
 
   return (
     <section style={{ fontFamily: "sans-serif", fontSize: "1.3rem" }}>
-      
+
       <div style={style}>
         <FormPostTwidder handleCreatePost={handleCreatePost} />
         <button onClick={() => handleChangePost(0)}>Change Message 1</button>
@@ -93,4 +94,4 @@ const Twidder = () => {
   );
 }
 
-export default Twidder;
+export default React.memo(Twidder);

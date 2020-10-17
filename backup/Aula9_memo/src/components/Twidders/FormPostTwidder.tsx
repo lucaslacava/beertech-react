@@ -18,4 +18,4 @@ const FormPostTwidder = ({ handleCreatePost }: IFormProps) => {
     );
 }
 
-export default FormPostTwidder;
+export default React.memo(FormPostTwidder);
